@@ -3,7 +3,7 @@
 // #include <part_two.h>
 #include <numeric>
 
-TEST(part_two, foo) {
+TEST(part_one, foo) {
     std::vector<int> freq_changes{1, -1};
     std::vector<int> frequencies(2, 0);
 
@@ -14,5 +14,5 @@ TEST(part_two, foo) {
 
     ASSERT_THAT(frequencies, testing::ElementsAre(1, 0));
 
-    ASSERT_THAT(first_repeated_frequency, 0);
+    // ASSERT_THAT(first_repeated_frequency, 0);
 }
