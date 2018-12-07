@@ -22,4 +22,4 @@ add_executable(tests tests.cpp tests_part_two.cpp)
 
 add_test(NAME tests COMMAND tests)
 
-target_link_libraries(tests PRIVATE  gmock_main)
+target_link_libraries(tests PRIVATE gmock_main part_two)
