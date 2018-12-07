@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <numeric>
 
-#include "part_two.h"
+#include "pairs_and_triples.h"
 
 TEST(part_two, same_letter) {
     std::string word{"abcdef"};

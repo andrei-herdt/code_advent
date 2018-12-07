@@ -1,19 +1,31 @@
-void FindPairsAndTriples(std::string& word, int& two_letters,
-                         int& three_letters) {
-    int number_same_letter{0};
-    two_letters = 0;
-    three_letters = 0;
-    std::sort(std::begin(word), std::end(word));
-    auto same_ptr = std::adjacent_find(std::begin(word), std::end(word));
-    while (same_ptr != std::end(word)) {
-        number_same_letter = std::count(same_ptr, std::end(word), *same_ptr);
-        if (number_same_letter == 2) {
-            two_letters = 1;
-            same_ptr = std::next(same_ptr, 1);
-        } else if (number_same_letter == 3) {
-            three_letters = 1;
-            same_ptr = std::next(same_ptr, 2);
-        };
-        same_ptr = std::adjacent_find(same_ptr, std::end(word));
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "pairs_and_triples.h"
+
+int main() {
+    std::ifstream input_file;
+    input_file.open("../data/second_day.txt");
+
+    std::vector<std::string> words;
+    std::string word;
+    while (input_file >> word) {
+        words.push_back(word);
     }
-};
+
+    int num_doubles{0};
+    int num_triples{0};
+    for (auto& word : words) {
+        int double_found{0};
+        int triple_found{0};
+        FindPairsAndTriples(word, double_found, triple_found);
+        num_doubles += double_found;
+        num_triples += triple_found;
+    }
+    std::cout << "The resulting hash is: " << num_doubles * num_triples
+              << std::endl;
+
+    return 0;
+}
