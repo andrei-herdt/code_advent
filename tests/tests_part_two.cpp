@@ -1,15 +1,18 @@
 #include <gmock/gmock.h>
 #include <algorithm>
+#include <map>
 #include <numeric>
 
+#include "find_duplicate.h"
 #include "pairs_and_triples.h"
 
 using namespace std;
 
 TEST(day_two, part_two) {
-    const vector<string> words{"abcde", "fghij", "klmno", "pqrst",
-                               "fguij", "axcye", "wvxyz"};
-    vector<string> shortened_words(words);
+    const vector<string> words{"abcdei", "fghiji", "klmnoi", "pqrsti",
+                               "fguiji", "axcyei", "wvxyzi"};
+
+    ASSERT_EQ(FindDuplicate(words), "fgiji");
 }
 
 TEST(day_two, part_one) {
