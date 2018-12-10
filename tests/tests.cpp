@@ -1,6 +1,5 @@
 #include <gmock/gmock.h>
 
-// #include <part_two.h>
 #include <numeric>
 
 TEST(part_one, foo) {
@@ -13,6 +12,4 @@ TEST(part_one, foo) {
                      frequencies.begin());
 
     ASSERT_THAT(frequencies, testing::ElementsAre(1, 0));
-
-    // ASSERT_THAT(first_repeated_frequency, 0);
 }
