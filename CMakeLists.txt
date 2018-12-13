@@ -7,8 +7,12 @@ add_library(find_duplicate src/find_duplicate.cpp)
 add_library(day_three_utils src/day_three_utils.cpp)
 
 add_executable(day_one src/first_exercise.cpp)
+
 add_executable(day_two src/part_two.cpp)
 target_link_libraries(day_two pairs_and_triples find_duplicate)
+
+add_executable(day_three src/day_three.cpp)
+target_link_libraries(day_three day_three_utils)
 
 
 add_subdirectory(tests)

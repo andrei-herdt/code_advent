@@ -18,8 +18,8 @@ std::vector<size_t> ExtractClaim(const std::string& claim) {
 
 void MakeClaim(const std::vector<size_t>& claim,
                std::map<std::pair<int, int>, size_t>& fabric) {
-    for (int i = 1; i < 1 + claim[3]; ++i) {
-        for (int j = 1; j < 1 + claim[4]; ++j) {
+    for (int i = 0; i < claim[3]; ++i) {
+        for (int j = 0; j < claim[4]; ++j) {
             ++fabric[std::make_pair(claim[1] + i, claim[2] + j)];
         }
     }
