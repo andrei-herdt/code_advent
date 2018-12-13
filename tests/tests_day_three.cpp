@@ -1,29 +1,25 @@
 #include <gmock/gmock.h>
-#include <algorithm>
 #include <map>
-#include <numeric>
+#include <vector>
 
-using namespace std;
+#include "day_three_utils.h"
 
 TEST(day_three, part_one) {
-    const vector<string> claims("#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4",
-                                "#3 @ 5,5: 2x2");
+    const std::vector<std::string> claims{"#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4",
+                                          "#3 @ 5,5: 2x2"};
 
-    map<pair<int, int>, size_t> fabric;
+    std::map<std::pair<int, int>, size_t> fabric;
 
-    for (int i = 1; i < 1 + 4; ++i) {
-        for (int j = 1; j < 1 + 4; ++j) {
-            ++fabric[make_pair(1 + i, 3 + j)];
-        }
-    }
+    auto claim = ExtractClaim(claims[0]);
+    MakeClaim(claim, fabric);
 
-    for (int i = 1; i < 1 + 4; ++i) {
-        for (int j = 1; j < 1 + 4; ++j) {
-            ++fabric[make_pair(3 + i, 1 + j)];
-        }
-    }
+    claim = ExtractClaim(claims[1]);
+    MakeClaim(claim, fabric);
 
-    int num_overlaps = count(map.begin(), map.end(),
-                             [](int num_uses) { return num_uses > 1; });
+    claim = ExtractClaim(claims[2]);
+    MakeClaim(claim, fabric);
+
+    auto num_overlaps = count_if(fabric.begin(), fabric.end(),
+                                 [](auto& claim) { return claim.second > 1; });
     ASSERT_EQ(num_overlaps, 4);
 }
