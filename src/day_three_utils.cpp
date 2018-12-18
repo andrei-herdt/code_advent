@@ -1,6 +1,5 @@
 #include "day_three_utils.h"
 
-#include <iostream>
 #include <regex>
 
 std::vector<size_t> ExtractClaim(const std::string& claim) {
@@ -26,6 +25,22 @@ void MakeClaim(const std::vector<size_t>& claim,
     for (size_t w = 0; w < width; ++w) {
         for (size_t h = 0; h < height; ++h) {
             ++fabric[std::make_pair(x + w, y + h)];
+        }
+    }
+}
+
+void MakeMultiClaim(const std::vector<size_t>& claim,
+                    std::multimap<std::pair<int, int>, size_t>& fabric) {
+    size_t id{claim[0]};
+    size_t x{claim[1]};
+    size_t y{claim[2]};
+    size_t width{claim[3]};
+    size_t height{claim[4]};
+    for (size_t w = 0; w < width; ++w) {
+        for (size_t h = 0; h < height; ++h) {
+            auto pos = std::make_pair(x + w, y + h);
+            auto pos_id = std::make_pair(pos, id);
+            fabric.insert(pos_id);
         }
     }
 }

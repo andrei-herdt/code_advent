@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -17,13 +18,28 @@ int main() {
     }
 
     std::map<std::pair<int, int>, size_t> fabric;
+    std::multimap<std::pair<int, int>, size_t> mfabric;
+    std::unordered_set<size_t> ids;
     for (auto claim : claims) {
+        auto claim_int = ExtractClaim(claim);
+        ids.insert(claim_int[0]);
         MakeClaim(ExtractClaim(claim), fabric);
+        MakeMultiClaim(claim_int, mfabric);
     }
 
+    // Part one
     auto num_overlaps = count_if(fabric.begin(), fabric.end(),
                                  [](auto& claim) { return claim.second > 1; });
     std::cout << "The number of overlaps is: " << num_overlaps << std::endl;
 
+    // Part two
+    for (auto it = std::begin(mfabric); it != std::end(mfabric); ++it) {
+        if (mfabric.count(it->first) > 1) {
+            ids.erase(it->second);
+        }
+    }
+
+    assert(ids.size() == 1);
+    std::cout << "The non-overlapping id is: " << *ids.begin() << std::endl;
     return 0;
 }

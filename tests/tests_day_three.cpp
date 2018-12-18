@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 #include <map>
+#include <unordered_set>
 #include <vector>
 
 #include "day_three_utils.h"
@@ -10,17 +11,10 @@ TEST(day_three, part_one) {
 
     std::map<std::pair<int, int>, size_t> fabric;
 
-    auto claim = ExtractClaim(claims[0]);
-    MakeClaim(claim, fabric);
-
-    claim = ExtractClaim(claims[1]);
-    MakeClaim(claim, fabric);
-
-    claim = ExtractClaim(claims[2]);
-    MakeClaim(claim, fabric);
-
-    claim = ExtractClaim(claims[3]);
-    MakeClaim(claim, fabric);
+    MakeClaim(ExtractClaim(claims[0]), fabric);
+    MakeClaim(ExtractClaim(claims[1]), fabric);
+    MakeClaim(ExtractClaim(claims[2]), fabric);
+    MakeClaim(ExtractClaim(claims[3]), fabric);
 
     auto num_overlaps = count_if(fabric.begin(), fabric.end(),
                                  [](auto& claim) { return claim.second > 1; });
@@ -29,23 +23,23 @@ TEST(day_three, part_one) {
 
 TEST(day_three, part_two) {
     const std::vector<std::string> claims{"#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4",
-                                          "#3 @ 5,5: 2x2", "#4 @ 6,6: 1x1"};
+                                          "#3 @ 5,5: 2x2"};
 
     std::multimap<std::pair<int, int>, size_t> fabric;
+    std::unordered_set<size_t> ids;
+    std::vector<size_t> claim_int;
+    for (auto claim : claims) {
+        claim_int = ExtractClaim(claim);
+        ids.insert(claim_int[0]);
+        MakeMultiClaim(claim_int, fabric);
+    }
 
-    auto claim = ExtractClaim(claims[0]);
-    size_t id{claim[0]};
-    size_t x{claim[1]};
-    size_t y{claim[2]};
-    size_t width{claim[3]};
-    size_t height{claim[4]};
-    for (size_t w = 0; w < width; ++w) {
-        for (size_t h = 0; h < height; ++h) {
-            auto pos = std::make_pair(x + w, y + h);
-            auto pos_id = std::make_pair(pos, id);
-            fabric.insert(pos_id);
+    for (auto it = std::begin(fabric); it != std::end(fabric); ++it) {
+        if (fabric.count(it->first) > 1) {
+            ids.erase(it->second);
         }
     }
 
-    ASSERT_EQ(claims.size(), 4);
+    ASSERT_EQ(ids.size(), 1);
+    ASSERT_EQ(*ids.begin(), 3);
 }
