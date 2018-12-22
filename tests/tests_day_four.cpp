@@ -9,8 +9,20 @@ std::string ExtractFirstOccurence(const std::string& word,
     return words_begin->str();
 }
 
+std::vector<std::string> ExtractAllOccurences(const std::string& word,
+                                              const std::string& pattern) {
+    std::vector<std::string> matches;
+    std::regex id_regex(pattern);
+    auto words_begin = std::sregex_iterator(word.begin(), word.end(), id_regex);
+    auto words_end = std::sregex_iterator();
+    for (auto it = words_begin; it != words_end; ++it) {
+        matches.push_back(it->str());
+    }
+    return matches;
+}
+
 TEST(day_four, part_one) {
-    const std::vector<std::string> foo{
+    const std::vector<std::string> sleep_times{
         "[1518 - 11 - 01 00:00] Guard #10 begins shift",
         "[1518 - 11 - 01 00:05] falls asleep [1518 - 11 - 01 00:25] wakes "
         "up",
@@ -40,8 +52,18 @@ TEST(day_four, part_one) {
      id Take max -> minute
     */
     std::multimap<std::pair<size_t, size_t>, size_t> sleep_minutes;
-    for (auto word : foo) {
-        ExtractFirstOccurence(word, "#([0-9]+)");
+    size_t current_id{0};
+    for (size_t i = 0; i < sleep_times.size(); ++i) {
+        auto id = ExtractFirstOccurence(sleep_times[i], "#([0-9]+)");
+        auto period = ExtractAllOccurences(sleep_times[i], "asleep");
+        if (!id.empty()) {
+            current_id = stoi(id.erase(0, 1));
+        };
+        if (!period.empty()) {
+            for (auto match : period) {
+                std::cout << match << std::endl;
+            }
+        }
     }
 
     int id = 10;
