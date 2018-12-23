@@ -55,16 +55,32 @@ TEST(day_four, part_one) {
     size_t current_id{0};
     for (size_t i = 0; i < sleep_times.size(); ++i) {
         auto id = ExtractFirstOccurence(sleep_times[i], "#([0-9]+)");
-        auto period = ExtractAllOccurences(sleep_times[i], "asleep");
+        auto period = ExtractAllOccurences(sleep_times[i], "\\d\\d:\\d\\d");
         if (!id.empty()) {
             current_id = stoi(id.erase(0, 1));
         };
-        if (!period.empty()) {
-            for (auto match : period) {
-                std::cout << match << std::endl;
+        if (id.empty()) {
+            size_t sleep_begin = stoi(period[0].substr(3));
+            size_t sleep_end = stoi(period[1].substr(3));
+
+            for (size_t minute = sleep_begin; minute < sleep_end; minute++) {
+                std::pair<size_t, size_t> key(current_id, minute);
+                sleep_minutes.insert(std::make_pair(key, 1));
             }
         }
     }
+
+    /*Integrate map*/
+    std::map<size_t, size_t> total_sleep_times;
+    std::map<std::pair<size_t, size_t>, size_t> longest_slept_minutes;
+    for (auto it = sleep_minutes.begin(); it != sleep_minutes.end(); ++it) {
+        ++total_sleep_times[it->first.first];
+        ++longest_slept_minutes[it->first];
+    }
+    auto longest_slep = std::max(
+        std::begin(total_sleep_times), std::end(total_sleep_times),
+        [](auto left, auto right) { return left->second < right->second; });
+    ASSERT_EQ(longest_slep, 99);
 
     int id = 10;
     int minute = 24;
