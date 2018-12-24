@@ -2,14 +2,11 @@
 #include <string>
 #include <vector>
 
+using IdTotalMinutesMap = std::map<size_t, size_t>;
+using IdMinutesMap = std::map<std::pair<size_t, size_t>, size_t>;
+
 std::string ExtractFirstOccurence(const std::string& word,
                                   const std::string& pattern);
 
-std::vector<std::string> ExtractAllOccurences(const std::string& word,
-                                              const std::string& pattern);
-
-std::multimap<std::pair<size_t, size_t>, size_t> GenerateSleepingMultiMap(
+std::pair<IdTotalMinutesMap, IdMinutesMap> GenerateMap(
     const std::vector<std::string> sleep_times);
-
-std::pair<size_t, size_t> FindLongestSleepingIdMinute(
-    const std::multimap<std::pair<size_t, size_t>, size_t>& sleep_minutes);

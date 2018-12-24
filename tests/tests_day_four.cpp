@@ -3,6 +3,8 @@
 
 #include "day_four_utils.h"
 
+using namespace std;
+
 TEST(day_four, part_one) {
     const std::vector<std::string> sleep_times{
         "[1518-11-01 00:00] Guard #10 begins shift",
@@ -32,11 +34,21 @@ TEST(day_four, part_one) {
      Sum of sleeping minutes for each minute over all instances of specific
      id Take max -> minute
     */
-    auto sleep_minutes = GenerateSleepingMultiMap(sleep_times);
+    auto [total_sleep_times, total_sleep_minutes] = GenerateMap(sleep_times);
 
-    auto [longest_id, longest_minute] =
-        FindLongestSleepingIdMinute(sleep_minutes);
+    auto longest_slept_id = max_element(
+        begin(total_sleep_times), end(total_sleep_times),
+        [](auto left, auto right) { return left.second < right.second; });
 
-    ASSERT_EQ(longest_id * longest_minute, 240);
-    // ASSERT_EQ(longest_id_minute.first * longest_id_minute.second, 240);
+    vector<size_t> longest_slept_minutes(60, 0);
+    for (size_t minute = 0; minute < 60; ++minute) {
+        longest_slept_minutes[minute] =
+            total_sleep_minutes[make_pair(longest_slept_id->first, minute)];
+    }
+    auto result =
+        max_element(begin(longest_slept_minutes), end(longest_slept_minutes));
+    size_t longest_slept_minute =
+        distance(begin(longest_slept_minutes), result);
+
+    ASSERT_EQ(longest_slept_id->first * longest_slept_minute, 240);
 }
