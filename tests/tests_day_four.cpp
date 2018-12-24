@@ -51,4 +51,13 @@ TEST(day_four, part_one) {
         distance(begin(longest_slept_minutes), result);
 
     ASSERT_EQ(longest_slept_id->first * longest_slept_minute, 240);
+
+    // Part two
+    auto max_minutes = max_element(
+        begin(total_sleep_minutes), end(total_sleep_minutes),
+        [](auto left, auto right) { return left.second < right.second; });
+
+    ASSERT_EQ(max_minutes->first.first, 99);
+    ASSERT_EQ(max_minutes->first.second, 45);
+    ASSERT_EQ(max_minutes->second, 3);
 }
