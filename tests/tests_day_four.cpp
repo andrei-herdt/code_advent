@@ -72,15 +72,26 @@ TEST(day_four, part_one) {
 
     /*Integrate map*/
     std::map<size_t, size_t> total_sleep_times;
-    std::map<std::pair<size_t, size_t>, size_t> longest_slept_minutes;
+    std::map<std::pair<size_t, size_t>, size_t> total_sleep_minutes;
     for (auto it = sleep_minutes.begin(); it != sleep_minutes.end(); ++it) {
-        ++total_sleep_times[it->first.first];
-        ++longest_slept_minutes[it->first];
+        total_sleep_times[it->first.first] += it->second;
+        total_sleep_minutes[it->first] += it->second;
     }
-    auto longest_slep = std::max(
+    auto longest_slept_id = std::max_element(
         std::begin(total_sleep_times), std::end(total_sleep_times),
-        [](auto left, auto right) { return left->second < right->second; });
-    ASSERT_EQ(longest_slep, 99);
+        [](auto left, auto right) { return left.second < right.second; });
+    ASSERT_EQ(longest_slept_id->first, 10);
+
+    std::vector<size_t> longest_slept_minutes(60, 0);
+    for (size_t minute = 0; minute < 60; ++minute) {
+        longest_slept_minutes[minute] = total_sleep_minutes[std::make_pair(
+            longest_slept_id->first, minute)];
+    }
+    auto result = std::max_element(std::begin(longest_slept_minutes),
+                                   std::end(longest_slept_minutes));
+    size_t longest_slept_minute =
+        std::distance(std::begin(longest_slept_minutes), result);
+    ASSERT_EQ(longest_slept_minute, 24);
 
     int id = 10;
     int minute = 24;
