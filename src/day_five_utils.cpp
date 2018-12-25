@@ -1,6 +1,8 @@
-#include <gmock/gmock.h>
+#include "day_five_utils.h"
+
 #include <algorithm>
 #include <numeric>
+#include <vector>
 
 using namespace std;
 
@@ -27,25 +29,4 @@ void React(string& polymer) {
             break;
         }
     }
-}
-
-TEST(day_five, part_one) {
-    string polymer{"dabAcCaCBAcCcaDA"};
-    React(polymer);
-    ASSERT_EQ(polymer.size(), 10);
-}
-
-TEST(day_five, part_two) {
-    string polymer{"dabAcCaCBAcCcaDA"};
-
-    polymer.erase(remove(begin(polymer), end(polymer), 'a'), end(polymer));
-    polymer.erase(remove(begin(polymer), end(polymer), 'A'), end(polymer));
-    React(polymer);
-    ASSERT_EQ(polymer.size(), 6);
-
-    polymer = "dabAcCaCBAcCcaDA";
-    polymer.erase(remove(begin(polymer), end(polymer), 'b'), end(polymer));
-    polymer.erase(remove(begin(polymer), end(polymer), 'B'), end(polymer));
-    React(polymer);
-    ASSERT_EQ(polymer.size(), 8);
 }

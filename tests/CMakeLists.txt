@@ -22,4 +22,4 @@ add_executable(tests tests.cpp tests_part_two.cpp tests_day_three.cpp tests_day_
 
 add_test(NAME tests COMMAND tests)
 
-target_link_libraries(tests PRIVATE gmock_main pairs_and_triples find_duplicate day_three_utils day_four_utils)
+target_link_libraries(tests PRIVATE gmock_main pairs_and_triples find_duplicate day_three_utils day_four_utils day_five_utils)
