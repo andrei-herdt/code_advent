@@ -18,7 +18,14 @@ add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
                  ${CMAKE_BINARY_DIR}/googletest-build
                  EXCLUDE_FROM_ALL)
 
-add_executable(tests tests.cpp tests_part_two.cpp tests_day_three.cpp tests_day_four.cpp tests_day_five.cpp)
+add_executable(tests
+    tests.cpp
+    tests_part_two.cpp
+    tests_day_three.cpp
+    tests_day_four.cpp
+    tests_day_five.cpp
+    tests_day_six.cpp
+    )
 
 add_test(NAME tests COMMAND tests)
 
