@@ -5,7 +5,6 @@
 #include <vector>
 
 #include <fstream>
-#include "day_three_utils.h"
 
 using namespace std;
 

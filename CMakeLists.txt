@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-include_directories(include)
+include_directories(include
+    /usr/local/boost_1_67_0
+    )
 
 add_library(pairs_and_triples src/pairs_and_triples.cpp)
 add_library(find_duplicate src/find_duplicate.cpp)

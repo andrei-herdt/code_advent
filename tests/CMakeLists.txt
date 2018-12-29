@@ -25,6 +25,7 @@ add_executable(tests
     tests_day_four.cpp
     tests_day_five.cpp
     tests_day_six.cpp
+    tests_day_seven.cpp
     )
 
 add_test(NAME tests COMMAND tests)
