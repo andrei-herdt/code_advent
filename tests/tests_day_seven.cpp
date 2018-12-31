@@ -1,7 +1,6 @@
 #include <gmock/gmock.h>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <boost/property_map/property_map.hpp>
 #include <fstream>
 #include <numeric>
 #include <vector>
@@ -22,8 +21,6 @@ TEST(day_seven, part_one) {
     for (size_t dep = 0; dep < input.size(); ++dep) {
         dependencies[dep] = pair<char, char>(input[dep][5], input[dep][36]);
     }
-    // vector<char> letters(input.size());
-    // iota(begin(letters), end(letters), 'A');
 
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>
         Graph;
@@ -38,8 +35,4 @@ TEST(day_seven, part_one) {
     for (container::reverse_iterator ii = c.rbegin(); ii != c.rend(); ++ii)
         cout << *ii << " ";
     cout << endl;
-
-    for (auto i : c) {
-        std::cout << i << std::endl;
-    }
 }
