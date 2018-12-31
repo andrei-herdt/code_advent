@@ -11,15 +11,15 @@ TEST(day_8, part_one) {
     //@todo use sstream to convert to size_t
 
     vector<size_t> tree(input.size() / 2);
-    for (int l = 0; l < input.size() / 2; ++l) {
-        tree[l] = stoi(input[2 * l]);
-        std::cout << tree[l] << " ";
-    }
-    std::cout << std::endl;
-    vector<pair<char, char>> dependencies(input.size());
-    for (size_t dep = 0; dep < input.size(); ++dep) {
-        dependencies[dep] = pair<char, char>(input[dep][5], input[dep][36]);
-    }
+    // for (int l = 0; l < input.size() / 2; ++l) {
+    //     tree[l] = stoi(input[2 * l]);
+    //     std::cout << tree[l] << " ";
+    // }
+    // std::cout << std::endl;
+    // vector<pair<char, char>> dependencies(input.size());
+    // for (size_t dep = 0; dep < input.size(); ++dep) {
+    //     dependencies[dep] = pair<char, char>(input[dep][5], input[dep][36]);
+    // }
 
     /* Create graph from data stream
      * traverse all nodes to gather the meta data

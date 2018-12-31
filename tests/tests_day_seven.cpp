@@ -31,8 +31,24 @@ TEST(day_seven, part_one) {
     container c;
     topological_sort(G, std::back_inserter(c));
 
-    cout << "A topological ordering: ";
-    for (container::reverse_iterator ii = c.rbegin(); ii != c.rend(); ++ii)
-        cout << *ii << " ";
-    cout << endl;
+    vector<char> t_sorted;
+    container::reverse_iterator ii = c.rbegin();
+    for (int i = 0; i < 6; ++i) {
+        t_sorted.push_back(*ii);
+        ++ii;
+    }
+
+    bool sorting_incomplete{true};
+    while (sorting_incomplete) {
+        sorting_incomplete = false;
+        for (size_t i = 0; i < t_sorted.size() - 1; ++i) {
+            if ((t_sorted[i] > t_sorted[i + 1]) &&
+                (find(begin(dependencies), end(dependencies),
+                      make_pair(t_sorted[i], t_sorted[i + 1])) ==
+                 end(dependencies))) {
+                swap(t_sorted[i], t_sorted[i + 1]);
+                sorting_incomplete = true;
+            }
+        }
+    }
 }
