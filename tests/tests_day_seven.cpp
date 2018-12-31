@@ -7,6 +7,48 @@
 
 using namespace std;
 
+vector<char> LexicographicalTopologicalSort(const vector<string>& input,
+                                            size_t num_symbols) {
+    vector<pair<char, char>> dependencies(input.size());
+    for (size_t dep = 0; dep < input.size(); ++dep) {
+        dependencies[dep] = pair<char, char>(input[dep][5], input[dep][36]);
+    }
+
+    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>
+        Graph;
+
+    Graph G(dependencies.begin(), dependencies.end(), num_symbols);
+
+    typedef std::vector<char> container;
+    container c;
+    topological_sort(G, std::back_inserter(c));
+
+    vector<char> t_sorted;
+    container::reverse_iterator ii = c.rbegin();
+    for (int i = 0; i < num_symbols; ++i) {
+        t_sorted.push_back(*ii);
+        ++ii;
+    }
+
+    bool sorting_incomplete{true};
+    while (sorting_incomplete) {
+        sorting_incomplete = false;
+        for (size_t i = 0; i < t_sorted.size() - 1; ++i) {
+            std::cout << t_sorted[i] << " " << t_sorted[i + 1] << std::endl;
+            if ((t_sorted[i] > t_sorted[i + 1]) &&
+                (find(begin(dependencies), end(dependencies),
+                      make_pair(t_sorted[i], t_sorted[i + 1])) ==
+                 end(dependencies))) {
+                std::cout << t_sorted[i] << "<->" << t_sorted[i + 1]
+                          << std::endl;
+                swap(t_sorted[i], t_sorted[i + 1]);
+                sorting_incomplete = true;
+            }
+        }
+    }
+    return t_sorted;
+}
+
 TEST(day_seven, part_one) {
     const vector<string> input{
         "Step C must be finished before step A can begin.",
@@ -16,39 +58,25 @@ TEST(day_seven, part_one) {
         "Step B must be finished before step E can begin.",
         "Step D must be finished before step E can begin.",
         "Step F must be finished before step E can begin."};
-
-    vector<pair<char, char>> dependencies(input.size());
-    for (size_t dep = 0; dep < input.size(); ++dep) {
-        dependencies[dep] = pair<char, char>(input[dep][5], input[dep][36]);
+    auto sorted_vector = LexicographicalTopologicalSort(input, 6);
+    for (auto i : sorted_vector) {
+        std::cout << i;
     }
+    std::cout << std::endl;
+}
 
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>
-        Graph;
+TEST(day_seven, part_one_data) {
+    ifstream input_file;
+    input_file.open("../../data/day_seven.txt");
 
-    Graph G(dependencies.begin(), dependencies.end(), 6);
-
-    typedef std::vector<char> container;
-    container c;
-    topological_sort(G, std::back_inserter(c));
-
-    vector<char> t_sorted;
-    container::reverse_iterator ii = c.rbegin();
-    for (int i = 0; i < 6; ++i) {
-        t_sorted.push_back(*ii);
-        ++ii;
+    vector<string> input;
+    string word;
+    while (getline(input_file, word)) {
+        input.push_back(word);
     }
-
-    bool sorting_incomplete{true};
-    while (sorting_incomplete) {
-        sorting_incomplete = false;
-        for (size_t i = 0; i < t_sorted.size() - 1; ++i) {
-            if ((t_sorted[i] > t_sorted[i + 1]) &&
-                (find(begin(dependencies), end(dependencies),
-                      make_pair(t_sorted[i], t_sorted[i + 1])) ==
-                 end(dependencies))) {
-                swap(t_sorted[i], t_sorted[i + 1]);
-                sorting_incomplete = true;
-            }
-        }
+    auto sorted_vector = LexicographicalTopologicalSort(input, 26);
+    for (auto i : sorted_vector) {
+        std::cout << i;
     }
+    std::cout << std::endl;
 }
