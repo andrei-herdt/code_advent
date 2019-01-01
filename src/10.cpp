@@ -5,6 +5,14 @@
 
 using namespace std;
 
+void UpdatePositions(vector<pair<int, int>> positions,
+                     vector<pair<int, int>> velocities) {
+    for (int i = 0; i < positions.size(); ++i) {
+        positions[i].first += velocities[i].first;
+        positions[i].second += velocities[i].second;
+    }
+}
+
 int main() {
     const vector<string> input{"position=< 9,  1> velocity=< 0,  2>",
                                "position=< 7,  0> velocity=<-1,  0>",
@@ -38,24 +46,30 @@ int main() {
                                "position=<14,  7> velocity=<-2,  0>",
                                "position=<-3,  6> velocity=< 2, -1>"};
 
-    vector<pair<int, int>> positions;
-    vector<pair<int, int>> velocities;
+    vector<pair<int, int>> positions(input.size());
+    vector<pair<int, int>> velocities(input.size());
 
-    std::regex id_regex("(<[0-9]+,)");
+    std::regex id_regex("-*[0-9]+");
     for (int i = 0; i < input.size(); ++i) {
         auto words_begin =
             std::sregex_iterator(input[i].begin(), input[i].end(), id_regex);
         auto words_end = std::sregex_iterator();
-        for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
-            std::smatch match = *i;
-            std::cout << stoi(match.str()) << std::endl;
+        vector<int> numbers;
+        for (auto it = words_begin; it != words_end; ++it) {
+            std::smatch match = *it;
+            numbers.push_back(stoi(match.str()));
         }
+        positions[i] = make_pair(numbers[0], numbers[1]);
+        velocities[i] = make_pair(numbers[2], numbers[3]);
     }
 
-    // for (auto i : board) {
-    //     std::cout << i << " ";
-    // }
-    // std::cout << std::endl;
+    UpdatePositions(positions, velocities);
+    UpdatePositions(positions, velocities);
+    UpdatePositions(positions, velocities);
+    for (auto i : positions) {
+        std::cout << i.first << " " << i.second;
+        std::cout << std::endl;
+    }
 
     // std::cout << "scores: " << std::endl;
     // for (auto i : scores) {
