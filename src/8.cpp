@@ -5,20 +5,25 @@
 
 using namespace std;
 
-int sum_meta(vector<size_t>::iterator it) {
-    ++it;
-    int num_meta = *it;
-    int sum_meta{0};
-    for (int i = 0; i < num_meta; ++i) {
-        ++it;
-        sum_meta += *it;
+int sum_meta(vector<size_t>::iterator& it) {
+    int num_children{*it++};
+    int num_meta{*it++};
+    int sumall{0};
+    for (int i = 0; i < num_children; ++i) {
+        sumall += sum_meta(it);
     }
-    return sum_meta;
+    for (int i = 0; i < num_meta; ++i) {
+        sumall += *it++;
+    }
+    return sumall;
 }
 
 int main() {
-    const string input{"2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2 "};
-    //@todo use sstream to convert to size_t
+    ifstream input_file;
+    input_file.open("../data/8.txt");
+
+    string input;
+    getline(input_file, input);
     stringstream numbers(input);
     size_t num;
     vector<size_t> tree_stream;
@@ -26,24 +31,7 @@ int main() {
         tree_stream.push_back(num);
     };
 
-    std::cout << sum_meta(begin(tree_stream)) << std::endl;
-
-    /* Create graph from data stream
-     * traverse all nodes to gather the meta data
-     */
-
-    // typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>
-    //     Graph;
-
-    // Graph G(dependencies.begin(), dependencies.end(), 6);
-
-    // typedef std::vector<char> container;
-    // container c;
-    // topological_sort(G, std::back_inserter(c));
-
-    // cout << "A topological ordering: ";
-    // for (container::reverse_iterator ii = c.rbegin(); ii != c.rend();
-    // ++ii)
-    //     cout << *ii << " ";
-    // cout << endl;
+    // Pass pointer by reference
+    auto it{begin(tree_stream)};
+    std::cout << sum_meta(it) << std::endl;
 }
