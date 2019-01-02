@@ -11,6 +11,7 @@ int main() {
     scores.insert(end(scores), 3);
     scores.insert(end(scores), 7);
 
+    // @todo implement circular buffer
     auto cur1 = begin(scores);
     auto cur2 = cur1++;
     size_t num_ones = 0;
