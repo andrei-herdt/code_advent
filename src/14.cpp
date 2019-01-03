@@ -12,21 +12,22 @@ int main() {
     scores.insert(end(scores), 7);
 
     // @todo implement circular buffer
-    auto cur1 = begin(scores);
-    auto cur2 = cur1++;
     size_t num_ones = 0;
     for (int i = 0; i < 10; ++i) {
         // gen new recipes
-        size_t sumcur = *cur1 + *cur2;
+        size_t sumcur = scores[cur1] + scores[cur2];
         // insert
-        auto scores_end = end(scores);
+        vector<size_t> digits;
         while (sumcur > 0) {
             size_t digit = sumcur % 10;
+            digits.push_back(digit);
             sumcur /= 10;
-            scores.insert(scores_end, digit);
             if (digit == 1) {
                 ++num_ones;
             }
+        }
+        for (int i = 0; i < digits.size(); ++i) {
+            scores.push_back(digits.pop_back());
         }
         // move
     }
