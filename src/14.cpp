@@ -1,38 +1,32 @@
 #include <assert.h>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <set>
+#include <vector>
 
 using namespace std;
 
 int main() {
-    set<size_t> scores;
+    vector<size_t> scores{3, 7};
 
-    scores.insert(end(scores), 3);
-    scores.insert(end(scores), 7);
-
-    // @todo implement circular buffer
-    size_t num_ones = 0;
-    for (int i = 0; i < 10; ++i) {
+    size_t cur1{0};
+    size_t cur2{1};
+    size_t input = 824501;
+    while (scores.size() < input + 10) {
         // gen new recipes
         size_t sumcur = scores[cur1] + scores[cur2];
         // insert
-        vector<size_t> digits;
-        while (sumcur > 0) {
-            size_t digit = sumcur % 10;
-            digits.push_back(digit);
-            sumcur /= 10;
-            if (digit == 1) {
-                ++num_ones;
-            }
+        if (sumcur >= 10) {
+            scores.push_back(1);
         }
-        for (int i = 0; i < digits.size(); ++i) {
-            scores.push_back(digits.pop_back());
-        }
-        // move
+        scores.push_back(sumcur % 10);
+        cur1 = (cur1 + scores[cur1] + 1) % scores.size();
+        cur2 = (cur2 + scores[cur2] + 1) % scores.size();
     }
 
-    for (auto i : scores) {
-        std::cout << i << " " << std::endl;
+    auto it = begin(scores) + input;
+    for (size_t i = 0; i < 10; ++i) {
+        std::cout << *it++;
     }
+    std::cout << std::endl;
 }
